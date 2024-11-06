@@ -17,6 +17,10 @@ const __dirname = dirname('D:/Projects/pmapp/src');
 export default async (req, res) => {
   const { userId } = req;
   const { brokerageName, date } = req.body;
+  console.log('Request: ', req);
+  console.log('brokerageName: ', brokerageName);
+  console.log('date: ', date);
+  console.log('file: ', req.file);
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }

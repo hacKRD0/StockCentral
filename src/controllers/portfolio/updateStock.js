@@ -5,17 +5,17 @@ const StockMaster = db.StockMaster;
 
 export default async (req, res) => {
   const { userId } = req;
-  const { stockId, stockReferenceId, sector } = req.body;
+  const { stockId, stockReferenceId, sectorId } = req.body;
 
-  if (!stockReferenceId && !sector) {
-    return res.status(400).send('Stock reference id or sector is required.');
+  if (!stockReferenceId && !sectorId) {
+    return res.status(400).send('Stock reference id or sector id is required.');
   }
 
   try {
     await StockMaster.update(
       {
         StockReferenceId: stockReferenceId,
-        BrokerageSector: sector,
+        SectorId: sectorId,
         updatedAt: new Date(),
       },
       {
@@ -24,7 +24,7 @@ export default async (req, res) => {
     );
 
     const stock = await StockMaster.findByPk(stockId);
-
+    console.log('Stock: ', stock);
     return res.status(200).send({
       success: true,
       message: 'Stock updated successfully.',

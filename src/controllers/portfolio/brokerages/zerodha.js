@@ -31,6 +31,8 @@ export default async (user, filePath, brokerageName, date) => {
   for (const row of parsedData) {
     let [symbol, quantity, price] = row;
     symbol = symbol.replace(/^"(.*)"$/, '$1');
+    quantity = parseFloat(quantity);
+    price = parseFloat(price);
     console.log('symbol: ', symbol);
     console.log('quantity: ', quantity);
     console.log('price: ', price);

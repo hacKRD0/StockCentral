@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.StockMaster, { onDelete: 'CASCADE' });
       User.hasMany(models.UserStocks, { onDelete: 'CASCADE' });
+      User.hasMany(models.Sector, { onDelete: 'CASCADE' });
     }
   }
   User.init(

@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'StockReferenceId',
       });
       StockMaster.hasMany(models.UserStocks, { onDelete: 'CASCADE' });
+      StockMaster.belongsTo(models.Sector, { foreignKey: 'SectorId' });
     }
   }
   StockMaster.init(
@@ -36,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       BrokerageSector: {
         type: DataTypes.STRING,
+      },
+      SectorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
       },
     },
     {

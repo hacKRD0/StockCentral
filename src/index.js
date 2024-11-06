@@ -1,13 +1,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
+import cors from 'cors';
 
 import portfolioRoute from './routes/portfolio.route.js';
 
 const app = express();
 const server = new createServer(app);
 const port = process.env.PORT || 3000;
+const corsOptions = {
+  origin: 'http://localhost:5173', // Allow your frontend origin
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'], // Allowed methods
+  allowedHeaders: ['*'], // Allowed headers from the client
+};
 
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(bodyParser.urlencoded({ limit: '25mb', extended: true }));
 app.use(bodyParser.json({ limit: '25mb' }));
 app.get('/', (req, res) => {
