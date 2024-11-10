@@ -47,6 +47,22 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'Keshava Rajavaram',
+        email: 'keshava.rajavaram@gmail.com',
+        password: await bcrypt.hash('Datta@16', 10),
+        role: 0, // User
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'dattakeshava',
+        email: 'dattakeshava@gmail.com',
+        password: await bcrypt.hash('Datta@16', 10),
+        role: 0, // User
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

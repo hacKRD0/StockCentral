@@ -5,7 +5,6 @@ const Sector = db.Sector;
 export default async (req, res) => {
   const { userId } = req;
   const { sectorName } = req.body;
-  console.log('Request : ', req.body);
 
   try {
     const sectorExists = await Sector.findOne({

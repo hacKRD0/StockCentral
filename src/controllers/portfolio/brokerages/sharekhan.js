@@ -31,9 +31,9 @@ export default async (user, filePath, brokerageName, date) => {
   for (const row of parsedData) {
     let [symbol, _a, quantity, price] = row;
     symbol = symbol.replace(/^"(.*)"$/, '$1');
-    console.log('symbol: ', symbol);
-    console.log('quantity: ', quantity);
-    console.log('price: ', price);
+    // console.log('symbol: ', symbol);
+    // console.log('quantity: ', quantity);
+    // console.log('price: ', price);
 
     if (
       !symbol ||
@@ -42,7 +42,7 @@ export default async (user, filePath, brokerageName, date) => {
       typeof quantity !== 'number' ||
       typeof price !== 'number'
     ) {
-      console.log('Invalid data');
+      // console.log('Invalid data');
       continue;
     }
 
@@ -50,7 +50,7 @@ export default async (user, filePath, brokerageName, date) => {
     const brokerage = await Brokerage.findOne({
       where: { name: brokerageName },
     });
-    console.log('brokerage: ', brokerage);
+    // console.log('brokerage: ', brokerage);
 
     // Find the stock by symbol
     const stock = await StockMaster.findOrCreate({
@@ -60,7 +60,7 @@ export default async (user, filePath, brokerageName, date) => {
         BrokerageId: brokerage.id,
       },
     });
-    console.log('stock: ', stock[0].id);
+    // console.log('stock: ', stock[0].id);
 
     const portfolioDate = new Date(date);
 
@@ -73,8 +73,8 @@ export default async (user, filePath, brokerageName, date) => {
       Date: portfolioDate, // Ensure exact Date match
     });
 
-    if (!created) {
-      console.log('Record already exists');
-    }
+    // if (!created) {
+    //   console.log('Record already exists');
+    // }
   }
 };

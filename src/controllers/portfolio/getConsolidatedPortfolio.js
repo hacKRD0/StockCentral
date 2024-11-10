@@ -12,13 +12,13 @@ export default async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    console.log('Date: ', date);
+    // console.log('Date: ', date);
     const holdingsDate = new Date(date);
     const startOfDay = new Date(holdingsDate.setUTCHours(0, 0, 0, 0));
     const endOfDay = new Date(holdingsDate.setUTCHours(23, 59, 59, 999));
-    console.log('holdingsDate: ', holdingsDate);
-    console.log('startOfDay: ', startOfDay);
-    console.log('endOfDay: ', endOfDay);
+    // console.log('holdingsDate: ', holdingsDate);
+    // console.log('startOfDay: ', startOfDay);
+    // console.log('endOfDay: ', endOfDay);
     const portfolio = await user.getUserStocks({
       where: {
         Date: {
@@ -38,7 +38,7 @@ export default async (req, res) => {
       },
     });
 
-    console.log('portfolio: ', portfolio);
+    // console.log('portfolio: ', portfolio);
 
     return res.status(200).send({
       success: true,

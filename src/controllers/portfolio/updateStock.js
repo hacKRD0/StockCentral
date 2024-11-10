@@ -24,7 +24,7 @@ export default async (req, res) => {
     );
 
     const stock = await StockMaster.findByPk(stockId);
-    console.log('Stock: ', stock);
+    // console.log('Stock: ', stock);
     return res.status(200).send({
       success: true,
       message: 'Stock updated successfully.',

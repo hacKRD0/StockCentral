@@ -17,22 +17,22 @@ const __dirname = dirname('D:/Projects/pmapp/src');
 export default async (req, res) => {
   const { userId } = req;
   const { brokerageName, date } = req.body;
-  console.log('Request: ', req);
-  console.log('brokerageName: ', brokerageName);
-  console.log('date: ', date);
-  console.log('file: ', req.file);
+  // console.log('Request: ', req);
+  // console.log('brokerageName: ', brokerageName);
+  // console.log('date: ', date);
+  // console.log('file: ', req.file);
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
 
   try {
     const user = await User.findByPk(userId);
-    console.log('user: ', user);
+    // console.log('user: ', user);
 
     // Get the uploaded file path
     const filePath = join(__dirname, req.file.path);
-    console.log('file: ', req.file);
-    console.log('filePath: ', filePath);
+    // console.log('file: ', req.file);
+    // console.log('filePath: ', filePath);
 
     if (brokerageName === 'Zerodha') {
       await processZerodhaPortfolio(user, filePath, brokerageName, date);

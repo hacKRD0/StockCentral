@@ -6,7 +6,7 @@ export default async (req, res) => {
   const { sectorId, sectorName } = req.body;
 
   try {
-    console.log('sectorName: ', sectorName);
+    // console.log('sectorName: ', sectorName);
     const sector = await Sector.update(
       {
         name: sectorName,
@@ -17,7 +17,7 @@ export default async (req, res) => {
     );
 
     const updatedSector = await Sector.findByPk(sectorId);
-    console.log('updatedSector: ', updatedSector);
+    // console.log('updatedSector: ', updatedSector);
 
     return res.status(200).send({
       success: true,
