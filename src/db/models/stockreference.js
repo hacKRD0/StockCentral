@@ -10,10 +10,24 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       StockReference.hasMany(models.StockMaster, { onDelete: 'CASCADE' });
+      StockReference.belongsTo(models.Sector, {
+        foreignKey: 'SectorId',
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      });
+      StockReference.belongsTo(models.User, { foreignKey: 'UserId' });
     }
   }
   StockReference.init(
     {
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'User',
+          key: 'id',
+        },
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -22,7 +36,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      sector: DataTypes.STRING,
+      SectorId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: 'Sector',
+          key: 'id',
+        },
+      },
     },
     {
       sequelize,

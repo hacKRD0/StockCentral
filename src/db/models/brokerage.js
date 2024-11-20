@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Brokerage.hasMany(models.StockMaster, { onDelete: 'CASCADE' });
+      Brokerage.hasMany(models.User, {
+        foreignKey: 'defaultBrokerageId',
+        as: 'users',
+      });
     }
   }
   Brokerage.init(

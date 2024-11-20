@@ -1,10 +1,15 @@
 import db from '../../db/models/index.js';
 
-const StockReference = db.StockReference;
+const User = db.User;
+const Sector = db.Sector;
 
 export default async (req, res) => {
+  const { userId } = req;
   try {
-    const stockReferences = await StockReference.findAll();
+    const user = await User.findByPk(userId);
+    const stockReferences = await user.getStockReferences({
+      include: [{ model: Sector }],
+    });
     return res.status(200).send({
       success: true,
       message: 'Stock references retrieved successfully.',

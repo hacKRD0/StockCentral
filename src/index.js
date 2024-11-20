@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import authRoute from './routes/auth.route.js';
 import portfolioRoute from './routes/portfolio.route.js';
+import userRoute from './routes/user.route.js';
 
 const app = express();
 const server = new createServer(app);
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoute);
 app.use('/portfolio', portfolioRoute);
+app.use('/user', userRoute);
 
 app.use('*', (req, res) => {
   res.status(404).json({

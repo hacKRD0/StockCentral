@@ -27,7 +27,7 @@ export default async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    // console.log('user: ', user);
+    console.log('user: ', user);
 
     // Get the uploaded file path
     const filePath = join(__dirname, req.file.path);

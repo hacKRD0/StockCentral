@@ -3,12 +3,16 @@ import { Op } from 'sequelize';
 
 const User = db.User;
 const Brokerage = db.Brokerage;
+const Sector = db.Sector;
 const StockMaster = db.StockMaster;
 const StockReference = db.StockReference;
 
 export default async (req, res) => {
   const { userId } = req;
-  const { date } = req.query;
+  let { date } = req.query;
+  if (!date) {
+    date = req.body.date;
+  }
 
   try {
     const user = await User.findByPk(userId);
@@ -30,6 +34,11 @@ export default async (req, res) => {
         include: [
           {
             model: StockReference,
+            include: [
+              {
+                model: Sector,
+              },
+            ],
           },
           {
             model: Brokerage,

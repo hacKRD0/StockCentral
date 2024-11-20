@@ -12,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.StockMaster, { onDelete: 'CASCADE' });
       User.hasMany(models.UserStocks, { onDelete: 'CASCADE' });
       User.hasMany(models.Sector, { onDelete: 'CASCADE' });
+      User.hasMany(models.StockReference, { onDelete: 'CASCADE' });
+      User.belongsTo(models.Brokerage, {
+        foreignKey: 'defaultBrokerageId',
+        as: 'defaultBrokerage',
+        onDelete: 'SET NULL', // Or 'CASCADE', based on your requirement
+        onUpdate: 'CASCADE',
+      });
     }
   }
   User.init(
@@ -37,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
             1: 'Admin',
           };
           return role[this.getDataValue('role')];
+        },
+      },
+      defaultBrokerageId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Brokerage',
+          key: 'id',
         },
       },
     },

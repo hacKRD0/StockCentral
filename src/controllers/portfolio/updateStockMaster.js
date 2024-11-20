@@ -5,17 +5,16 @@ const StockMaster = db.StockMaster;
 
 export default async (req, res) => {
   const { userId } = req;
-  const { stockId, stockReferenceId, sectorId } = req.body;
+  const { stockId, stockReferenceId } = req.body;
 
-  if (!stockReferenceId && !sectorId) {
-    return res.status(400).send('Stock reference id or sector id is required.');
+  if (!stockId || !stockReferenceId) {
+    return res.status(400).send('Stock reference id is required.');
   }
 
   try {
     await StockMaster.update(
       {
         StockReferenceId: stockReferenceId,
-        SectorId: sectorId,
         updatedAt: new Date(),
       },
       {

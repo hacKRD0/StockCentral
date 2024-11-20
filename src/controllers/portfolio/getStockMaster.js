@@ -13,14 +13,16 @@ export default async (req, res) => {
       include: [
         {
           model: StockReference,
+          include: [
+            {
+              model: Sector,
+              required: false,
+            },
+          ],
           required: false,
         },
         {
           model: Brokerage,
-          required: false,
-        },
-        {
-          model: Sector,
           required: false,
         },
       ],

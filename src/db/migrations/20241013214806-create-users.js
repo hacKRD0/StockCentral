@@ -25,6 +25,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
+      defaultBrokerageId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Brokerages',
+          key: 'id',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

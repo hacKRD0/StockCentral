@@ -9,6 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      UserId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -17,8 +26,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      sector: {
-        type: Sequelize.STRING,
+      SectorId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Sectors',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

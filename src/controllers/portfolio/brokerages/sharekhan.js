@@ -52,6 +52,21 @@ export default async (user, filePath, brokerageName, date) => {
     });
     // console.log('brokerage: ', brokerage);
 
+    let stockReference;
+    if (user.defaultBrokerageId === brokerage.id) {
+      const unknownSector = await Sector.findOrCreate({
+        where: { name: 'Unknown', UserId: user.id },
+      });
+
+      stockReference = await StockReference.findOrCreate({
+        where: {
+          UserId: user.id,
+          StockName: symbol,
+          SectorId: unknownSector.id,
+        },
+      });
+    }
+
     // Find the stock by symbol
     const stock = await StockMaster.findOrCreate({
       where: {
@@ -61,6 +76,11 @@ export default async (user, filePath, brokerageName, date) => {
       },
     });
     // console.log('stock: ', stock[0].id);
+
+    // Update the stock with the StockReferenceId
+    stock[0].update({
+      StockReferenceId: stockReference ? stockReference[0].id : null,
+    });
 
     const portfolioDate = new Date(date);
 

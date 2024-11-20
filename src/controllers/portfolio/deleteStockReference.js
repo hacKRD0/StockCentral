@@ -1,15 +1,15 @@
 import db from '../../db/models/index.js';
 
 const User = db.User;
-const StockMaster = db.StockMaster;
+const StockReference = db.StockReference;
 
 export default async (req, res) => {
   const { userId } = req.userId;
-  const { stockId } = req.body;
+  const { stockReferenceId } = req.body;
 
   try {
-    await StockMaster.destroy({
-      where: { id: stockId },
+    await StockReference.destroy({
+      where: { id: stockReferenceId },
     });
 
     return res.status(200).send({

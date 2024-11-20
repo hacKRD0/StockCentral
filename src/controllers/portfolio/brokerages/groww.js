@@ -4,9 +4,11 @@ import { readFile } from 'fs/promises';
 // import { join, dirname } from 'path'; // Correct way to import from 'path'
 
 const User = db.User;
+const Sector = db.Sector;
 const Brokerage = db.Brokerage;
 const UserStocks = db.UserStocks;
 const StockMaster = db.StockMaster;
+const StockReference = db.StockReference;
 
 export default async (user, filePath, brokerageName, date) => {
   // Read the CSV file
@@ -33,12 +35,12 @@ export default async (user, filePath, brokerageName, date) => {
     symbol = symbol.replace(/^"(.*)"$/, '$1');
     quantity = parseInt(quantity);
     price = parseFloat(price);
-    // console.log('symbol: ', symbol + ' ' + typeof symbol);
-    // console.log('quantity: ', quantity + ' ' + typeof quantity);
-    // console.log('price: ', price + ' ' + typeof price);
+    console.log('symbol: ', symbol + ' ' + typeof symbol);
+    console.log('quantity: ', quantity + ' ' + typeof quantity);
+    console.log('price: ', price + ' ' + typeof price);
 
     if (!symbol || !quantity || !price) {
-      // console.log('Invalid data');
+      console.log('Invalid data');
       continue;
     }
 
@@ -46,7 +48,24 @@ export default async (user, filePath, brokerageName, date) => {
     const brokerage = await Brokerage.findOne({
       where: { name: brokerageName },
     });
-    // console.log('brokerage: ', brokerage);
+    console.log('brokerage: ', brokerage);
+
+    let stockReference;
+    if (user.defaultBrokerageId === brokerage.id) {
+      const unknownSector = await Sector.findOrCreate({
+        where: { name: 'Unknown', UserId: user.id },
+      });
+      console.log('unknownSector: ', unknownSector);
+
+      stockReference = await StockReference.findOrCreate({
+        where: {
+          UserId: user.id,
+          name: symbol,
+          code: symbol,
+          SectorId: unknownSector[0].id,
+        },
+      });
+    }
 
     // Find the stock by symbol
     const stock = await StockMaster.findOrCreate({
@@ -56,7 +75,12 @@ export default async (user, filePath, brokerageName, date) => {
         BrokerageId: brokerage.id,
       },
     });
-    // console.log('stock: ', stock[0].id);
+    console.log('stock: ', stock[0].id);
+
+    // Update the stock with the StockReferenceId
+    stock[0].update({
+      StockReferenceId: stockReference ? stockReference[0].id : null,
+    });
 
     const portfolioDate = new Date(date);
 

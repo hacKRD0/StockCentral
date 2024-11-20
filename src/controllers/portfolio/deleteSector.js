@@ -1,19 +1,27 @@
 import db from '../../db/models/index.js';
 
 const Sector = db.Sector;
-const StockMaster = db.StockMaster;
+const StockReference = db.StockReference;
 
 export default async (req, res) => {
+  const { userId } = req;
   const { sectorId } = req.body;
 
   try {
     const unknownSector = await Sector.findOne({
-      where: { name: 'Unknown' },
+      where: { name: 'Unknown', UserId: userId },
     });
 
-    await StockMaster.update(
+    if (sectorId === unknownSector.id) {
+      return res.status(400).send({
+        success: false,
+        message: 'You cannot delete the Unknown sector.',
+      });
+    }
+
+    await StockReference.update(
       { SectorId: unknownSector.id },
-      { where: { SectorId: sectorId } }
+      { where: { SectorId: sectorId, UserId: userId } }
     );
 
     const sector = await Sector.destroy({
