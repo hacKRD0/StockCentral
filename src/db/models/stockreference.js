@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      StockReference.hasMany(models.StockMaster, { onDelete: 'CASCADE' });
+      StockReference.hasMany(models.StockMaster, { onDelete: 'SET NULL' });
       StockReference.belongsTo(models.Sector, {
         foreignKey: 'SectorId',
         onUpdate: 'CASCADE',
@@ -48,6 +48,40 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'StockReference',
+      hooks: {
+        /**
+         * Before a stock reference is destroyed, handle the "Unknown" sector logic.
+         */
+        async beforeDestroy(stockReference, options) {
+          const transaction =
+            options.transaction || (await sequelize.transaction());
+          const { StockMaster, StockReference } = sequelize.models;
+
+          try {
+            // Update the stockMaster to reference null
+            await StockMaster.update(
+              {
+                StockReferenceId: null,
+              },
+              {
+                where: {
+                  StockReferenceId: stockReference.id,
+                },
+                transaction,
+              }
+            );
+
+            if (!options.transaction) {
+              await transaction.commit();
+            }
+          } catch (error) {
+            if (!options.transaction) {
+              await transaction.rollback();
+            }
+            throw error;
+          }
+        },
+      },
     }
   );
   return StockReference;

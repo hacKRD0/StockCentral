@@ -29,7 +29,7 @@ module.exports = {
       },
       StockReferenceId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         references: {
           model: 'StockReferences',
           key: 'id',

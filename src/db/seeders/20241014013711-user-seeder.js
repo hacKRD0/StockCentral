@@ -8,6 +8,14 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [
       {
+        name: 'Keshava Rajavaram',
+        email: 'keshava.rajavaram@gmail.com',
+        password: await bcrypt.hash('Datta@16', 10),
+        role: 0, // User
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         name: 'Amit Sharma',
         email: 'amit.sharma@example.in',
         password: await bcrypt.hash('password123', 10),
@@ -44,14 +52,6 @@ module.exports = {
         email: 'vikram.singh@example.in',
         password: await bcrypt.hash('password123', 10),
         role: 1, // Admin
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        name: 'Keshava Rajavaram',
-        email: 'keshava.rajavaram@gmail.com',
-        password: await bcrypt.hash('Datta@16', 10),
-        role: 0, // User
         createdAt: new Date(),
         updatedAt: new Date(),
       },

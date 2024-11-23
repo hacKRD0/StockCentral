@@ -6,6 +6,12 @@ const User = db.User;
 export default async (req, res) => {
   const { name, email, password } = req.body;
   try {
+    const userExists = await User.findOne({ where: { email } });
+    if (userExists) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'User already exists' });
+    }
     if (password == '') {
       password = Math.random().toString(36).slice(-8);
     }

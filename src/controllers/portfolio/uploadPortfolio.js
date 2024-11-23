@@ -12,7 +12,8 @@ const UserStocks = db.UserStocks;
 const StockMaster = db.StockMaster;
 
 // Helper to get the __dirname in ESM
-const __dirname = dirname('D:/Projects/pmapp/src');
+const __dirname = dirname(process.env.WORKING_DIR);
+// console.log('__dirname: ', __dirname);
 
 export default async (req, res) => {
   const { userId } = req;
@@ -31,8 +32,8 @@ export default async (req, res) => {
 
     // Get the uploaded file path
     const filePath = join(__dirname, req.file.path);
-    // console.log('file: ', req.file);
-    // console.log('filePath: ', filePath);
+    console.log('file: ', req.file);
+    console.log('filePath: ', filePath);
 
     if (brokerageName === 'Zerodha') {
       await processZerodhaPortfolio(user, filePath, brokerageName, date);

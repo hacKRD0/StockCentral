@@ -29,6 +29,7 @@ module.exports = {
       SectorId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onDelete: 'SET NULL',
         references: {
           model: 'Sectors',
           key: 'id',

@@ -35,9 +35,9 @@ export default async (user, filePath, brokerageName, date) => {
     symbol = symbol.replace(/^"(.*)"$/, '$1');
     quantity = parseFloat(quantity);
     price = parseFloat(price);
-    console.log('symbol: ', symbol);
-    console.log('quantity: ', quantity);
-    console.log('price: ', price);
+    // console.log('symbol: ', symbol);
+    // console.log('quantity: ', quantity);
+    // console.log('price: ', price);
 
     if (
       !symbol ||
@@ -46,7 +46,7 @@ export default async (user, filePath, brokerageName, date) => {
       typeof quantity !== 'number' ||
       typeof price !== 'number'
     ) {
-      console.log('Invalid data');
+      // console.log('Invalid data');
       continue;
     }
 
@@ -54,14 +54,14 @@ export default async (user, filePath, brokerageName, date) => {
     const brokerage = await Brokerage.findOne({
       where: { name: brokerageName },
     });
-    console.log('brokerage: ', brokerage);
+    // console.log('brokerage: ', brokerage);
 
     let stockReference;
     if (user.defaultBrokerageId === brokerage.id) {
       const unknownSector = await Sector.findOrCreate({
         where: { name: 'Unknown', UserId: user.id },
       });
-      console.log('unknownSector: ', unknownSector);
+      // console.log('unknownSector: ', unknownSector);
 
       stockReference = await StockReference.findOrCreate({
         where: {
@@ -71,7 +71,7 @@ export default async (user, filePath, brokerageName, date) => {
           SectorId: unknownSector[0].id,
         },
       });
-      console.log('stockReference: ', stockReference);
+      // console.log('stockReference: ', stockReference);
     }
 
     // Find the stock by symbol
@@ -82,7 +82,7 @@ export default async (user, filePath, brokerageName, date) => {
         BrokerageId: brokerage.id,
       },
     });
-    console.log('stock: ', stock[0].id);
+    // console.log('stock: ', stock[0].id);
 
     // Update the stock with the StockReferenceId
     stock[0].update({

@@ -21,7 +21,7 @@ export default async (req, res) => {
       });
     }
 
-    const unknownSector = await Sector.findOne({
+    const unknownSector = await Sector.findOrCreate({
       where: { name: 'Unknown', UserId: userId },
     });
 

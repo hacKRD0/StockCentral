@@ -35,12 +35,12 @@ export default async (user, filePath, brokerageName, date) => {
     symbol = symbol.replace(/^"(.*)"$/, '$1');
     quantity = parseInt(quantity);
     price = parseFloat(price);
-    console.log('symbol: ', symbol + ' ' + typeof symbol);
-    console.log('quantity: ', quantity + ' ' + typeof quantity);
-    console.log('price: ', price + ' ' + typeof price);
+    // console.log('symbol: ', symbol + ' ' + typeof symbol);
+    // console.log('quantity: ', quantity + ' ' + typeof quantity);
+    // console.log('price: ', price + ' ' + typeof price);
 
     if (!symbol || !quantity || !price) {
-      console.log('Invalid data');
+      // console.log('Invalid data');
       continue;
     }
 
@@ -48,14 +48,14 @@ export default async (user, filePath, brokerageName, date) => {
     const brokerage = await Brokerage.findOne({
       where: { name: brokerageName },
     });
-    console.log('brokerage: ', brokerage);
+    // console.log('brokerage: ', brokerage);
 
     let stockReference;
     if (user.defaultBrokerageId === brokerage.id) {
       const unknownSector = await Sector.findOrCreate({
         where: { name: 'Unknown', UserId: user.id },
       });
-      console.log('unknownSector: ', unknownSector);
+      // console.log('unknownSector: ', unknownSector);
 
       stockReference = await StockReference.findOrCreate({
         where: {
@@ -75,7 +75,7 @@ export default async (user, filePath, brokerageName, date) => {
         BrokerageId: brokerage.id,
       },
     });
-    console.log('stock: ', stock[0].id);
+    // console.log('stock: ', stock[0].id);
 
     // Update the stock with the StockReferenceId
     stock[0].update({
@@ -94,7 +94,7 @@ export default async (user, filePath, brokerageName, date) => {
     });
 
     // if (!created) {
-    //   console.log('Record already exists: ', record);
+    // console.log('Record already exists: ', record);
     // }
   }
 };

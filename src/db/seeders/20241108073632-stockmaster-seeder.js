@@ -8,7 +8,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 1, // Brokerage 1
-        StockReferenceId: 1, // Stock Reference: Reliance
+        // StockReferenceId: 1, // Stock Reference: Reliance
         BrokerageCode: 'RELIANCE',
         BrokerageSector: 'Energy',
         createdAt: new Date(),
@@ -17,7 +17,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 2, // Brokerage 2
-        StockReferenceId: 1, // Stock Reference: Reliance
+        // StockReferenceId: 1, // Stock Reference: Reliance
         BrokerageCode: 'RIL',
         BrokerageSector: 'Energy',
         createdAt: new Date(),
@@ -28,7 +28,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 1, // Brokerage 1
-        StockReferenceId: 2, // Stock Reference: TCS
+        // StockReferenceId: 2, // Stock Reference: TCS
         BrokerageCode: 'TCS',
         BrokerageSector: 'Information Technology',
         createdAt: new Date(),
@@ -37,7 +37,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 3, // Brokerage 3
-        StockReferenceId: 2, // Stock Reference: TCS
+        // StockReferenceId: 2, // Stock Reference: TCS
         BrokerageCode: 'TCS',
         BrokerageSector: 'Information Technology',
         createdAt: new Date(),
@@ -48,7 +48,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 2, // Brokerage 2
-        StockReferenceId: 3, // Stock Reference: HDFC Bank
+        // StockReferenceId: 3, // Stock Reference: HDFC Bank
         BrokerageCode: 'HDFCBANK',
         BrokerageSector: 'Banking',
         createdAt: new Date(),
@@ -57,7 +57,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 3, // Brokerage 3
-        StockReferenceId: 3, // Stock Reference: HDFC Bank
+        // StockReferenceId: 3, // Stock Reference: HDFC Bank
         BrokerageCode: 'HDFCBNK',
         BrokerageSector: 'Banking',
         createdAt: new Date(),
@@ -68,7 +68,7 @@ module.exports = {
       {
         UserId: 1,
         BrokerageId: 1, // Brokerage 1
-        StockReferenceId: 3, // Stock Reference: HDFC Bank
+        // StockReferenceId: 3, // Stock Reference: HDFC Bank
         BrokerageCode: 'HDFCBANK',
         BrokerageSector: 'Banking',
         createdAt: new Date(),
