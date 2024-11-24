@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 const User = db.User;
 
 export default async (req, res) => {
-  const { name, email, password } = req.body;
+  let { name, email, password } = req.body;
   try {
     const userExists = await User.findOne({ where: { email } });
     if (userExists) {
