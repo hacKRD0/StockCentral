@@ -1,48 +1,56 @@
-Here’s a detailed and professional **README.md** for your backend repository, focusing on its purpose, setup, and key features.
+# Backend Repository for Portfolio Management Application
 
----
-
-# Backend Repository for Stock Management Application
-
-This repository houses the backend for the **Stock Management Application**, designed to handle user portfolios, stock references, and related functionalities. Built with **Node.js**, **Express**, and **Sequelize** (connected to a **PostgreSQL** database), this backend ensures robust and scalable API services.
+This repository contains the backend implementation for the **Portfolio Management Application**, a robust platform for managing user portfolios, stock references, and other related functionalities. It leverages modern technologies like **Node.js**, **Express**, and **Sequelize** with **PostgreSQL** to deliver scalable and maintainable API services.
 
 ---
 
 ## Features
 
-### Core Features:
+### Core Features
 
 - **User Management**:
-  - Create, update, and manage user accounts.
-  - Handle user-specific data such as portfolios and stocks.
-- **Stock Reference Management**:
-  - Maintain a database of stock references tied to specific sectors.
-  - Automatically handle cascading updates and deletions to maintain database integrity.
-- **Sector Management**:
-  - Manage sectors linked to stocks and references.
-  - Assign "Unknown" sectors when existing sectors are deleted.
-- **Portfolio Tracking**:
-  - Fetch unique dates for uploaded stock data per user.
-  - Track user-specific stocks and their associated metadata.
 
-### Additional Functionalities:
+  - Create, update, and manage user accounts.
+  - Handle user-specific data, including portfolios and stock details.
+
+- **Stock Reference Management**:
+
+  - Maintain a database of user-defined stock references categorized by sectors.
+  - Automatically manage cascading updates and deletions to preserve database integrity.
+
+- **Sector Management**:
+
+  - Organize stocks into sectors for better categorization.
+  - Automatically reassign "Unknown" sectors when a sector is deleted.
+
+- **Portfolio Tracking**:
+  - Consolidate portfolio data across multiple brokerages for a specific date.
+  - Fetch unique upload dates for user stock data.
+  - Monitor user-specific stock quantities and average costs.
+
+### Additional Functionalities
 
 - **Database Integrity**:
-  - Automatically update `StockMaster` entries when `StockReference` is deleted (via hooks).
-  - Use hooks and transactions to ensure atomicity and maintain referential integrity.
+
+  - Update dependent `StockMaster` entries when `StockReference` is deleted using hooks.
+  - Leverage transactions and hooks to maintain atomicity and referential integrity.
+
 - **Efficient Querying**:
-  - Fetch unique dates using optimized Sequelize queries.
+
+  - Retrieve unique dates and portfolio summaries using optimized Sequelize queries.
+
 - **Custom Hooks**:
-  - Implement pre-deletion hooks for `StockReference` and `Sector` models to manage cascading effects.
+  - Implement model hooks for cascading effects on `StockReference` and `Sector` deletions.
 
 ---
 
 ## Technologies Used
 
-- **Node.js**: Server-side JavaScript runtime.
-- **Express**: Framework for building robust RESTful APIs.
-- **Sequelize**: ORM for database management.
-- **PostgreSQL**: Relational database for storing structured data.
+- **Node.js**: High-performance server-side JavaScript runtime.
+- **Express**: Lightweight framework for building RESTful APIs.
+- **Sequelize**: ORM for managing relational database operations.
+- **PostgreSQL**: A powerful open-source relational database system.
+- **Docker**: Containerization for consistent environment deployment.
 - **ESM**: Modern JavaScript module support.
 
 ---
@@ -56,14 +64,15 @@ Ensure the following are installed on your system:
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [PostgreSQL](https://www.postgresql.org/) (v12 or higher)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) (optional for containerized deployment)
 
 ### Steps to Setup
 
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-repo-name/backend-stock-management.git
-   cd backend-stock-management
+   git clone https://github.com/hacKRD0/PMApp.git
+   cd PMApp
    ```
 
 2. **Install Dependencies**:
@@ -73,16 +82,20 @@ Ensure the following are installed on your system:
    ```
 
 3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory and configure the following variables:
+   Create a `.env` file in the root directory with the following content:
 
    ```env
    NODE_ENV=development
    PORT=3000
+   APP_NAME=pmapp
    DB_HOST=localhost
    DB_PORT=5432
    DB_USER=your_postgres_username
    DB_PASSWORD=your_postgres_password
    DB_NAME=your_database_name
+   WORKING_DIR=/app
+   FRONTEND_URL=your_frontend_url
+   FIREBASE_KEY=your_firebase_key
    ```
 
 4. **Run Database Migrations**:
@@ -103,110 +116,112 @@ Ensure the following are installed on your system:
    npm run dev
    ```
 
-   The server will run on `http://localhost:3000`.
-
----
-
-## API Endpoints
-
-### **User Endpoints**
-
-- `GET /api/users/:id`: Fetch user details by ID.
-- `POST /api/users`: Create a new user.
-
-### **StockReference Endpoints**
-
-- `GET /api/stock-references`: Fetch all stock references.
-- `DELETE /api/stock-references/:id`: Delete a stock reference (updates associated records).
-
-### **Portfolio Endpoints**
-
-- `GET /api/portfolio/dates`: Fetch unique upload dates for the authenticated user.
+   The server will be available at `http://localhost:3000`.
 
 ---
 
 ## Database Structure
 
-### Tables
+### Tables and Relationships
 
 #### **Users**
 
-| Column | Type    | Description  |
-| ------ | ------- | ------------ |
-| id     | Integer | Primary key  |
-| name   | String  | User's name  |
-| email  | String  | User's email |
+| Column               | Type    | Description                 |
+| -------------------- | ------- | --------------------------- |
+| `id`                 | Integer | Primary key                 |
+| `name`               | String  | User's name                 |
+| `email`              | String  | User's email                |
+| `defaultBrokerageId` | Integer | Foreign key to `Brokerages` |
+
+#### **Brokerages**
+
+| Column | Type    | Description    |
+| ------ | ------- | -------------- |
+| `id`   | Integer | Primary key    |
+| `name` | String  | Brokerage name |
+| `code` | String  | Brokerage code |
 
 #### **StockReferences**
 
-| Column   | Type    | Description              |
-| -------- | ------- | ------------------------ |
-| id       | Integer | Primary key              |
-| name     | String  | Stock reference name     |
-| code     | String  | Stock reference code     |
-| SectorId | Integer | Foreign key to `Sectors` |
-| UserId   | Integer | Foreign key to `Users`   |
+| Column     | Type    | Description              |
+| ---------- | ------- | ------------------------ |
+| `id`       | Integer | Primary key              |
+| `name`     | String  | Stock reference name     |
+| `code`     | String  | Stock reference code     |
+| `SectorId` | Integer | Foreign key to `Sectors` |
+| `UserId`   | Integer | Foreign key to `Users`   |
 
 #### **StockMasters**
 
-| Column           | Type    | Description                      |
-| ---------------- | ------- | -------------------------------- |
-| id               | Integer | Primary key                      |
-| StockReferenceId | Integer | Foreign key to `StockReferences` |
-| someOtherField   | String  | Placeholder for additional data  |
+| Column             | Type    | Description                      |
+| ------------------ | ------- | -------------------------------- |
+| `id`               | Integer | Primary key                      |
+| `UserId`           | Integer | Foreign key to `Users`           |
+| `BrokerageId`      | Integer | Foreign key to `Brokerages`      |
+| `StockReferenceId` | Integer | Foreign key to `StockReferences` |
 
 #### **Sectors**
 
-| Column | Type    | Description |
-| ------ | ------- | ----------- |
-| id     | Integer | Primary key |
-| name   | String  | Sector name |
+| Column   | Type    | Description            |
+| -------- | ------- | ---------------------- |
+| `id`     | Integer | Primary key            |
+| `name`   | String  | Sector name            |
+| `UserId` | Integer | Foreign key to `Users` |
+
+#### **UserStocks**
+
+| Column          | Type    | Description                   |
+| --------------- | ------- | ----------------------------- |
+| `id`            | Integer | Primary key                   |
+| `UserId`        | Integer | Foreign key to `Users`        |
+| `StockMasterId` | Integer | Foreign key to `StockMasters` |
+| `Qty`           | Integer | Stock quantity                |
+| `AvgCost`       | Double  | Average stock cost            |
+| `Date`          | Date    | Uploaded date                 |
 
 ---
 
-## Development
+## Deployment with Docker
 
-### Running the Server in Development Mode
+1. **Build and Store the Docker Container for deployment**:
 
-Use **nodemon** to automatically restart the server on file changes:
+   ```bash
+   docker build -t docker_username/pmapp-backend:latest .
+   docker push docker_username/pmapp-backend:latest
+   ```
 
-```bash
-npm run dev
-```
-
-### Running Tests
-
-Ensure all tests pass before pushing changes:
-
-```bash
-npm test
-```
-
-### Linting
-
-Check for linting issues with:
-
-```bash
-npm run lint
-```
+2. **Access the Application**:
+   - Backend: `http://localhost:5000`
+   - Frontend: `http://localhost:3000`
 
 ---
 
-## Contributing
+## Project Structure
 
-We welcome contributions! To contribute:
+- **`src/`**: Main source directory.
+  - **`controllers/`**: Handles incoming API requests and responses.
+  - **`models/`**: Defines Sequelize models and database relationships.
+  - **`routes/`**: API endpoints and route definitions.
+  - **`auth/`**: Custom middleware for validation, authentication, etc.
+  - **`db/`**: Database configuration, migrations, and seeders.
 
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes and push the branch:
-   ```bash
-   git commit -m "Description of changes"
-   git push origin feature-name
-   ```
-4. Open a pull request.
+---
+
+## NPM Scripts
+
+| Script                          | Description                         |
+| ------------------------------- | ----------------------------------- |
+| `npm run dev`                   | Run the server in development mode  |
+| `npm run start`                 | Start the server in production mode |
+| `npx sequelize-cli db:migrate`  | Run database migrations             |
+| `npx sequelize-cli db:seed:all` | Seed the database with initial data |
+
+---
+
+## Related Repositories
+
+- **Frontend**: [PMApp Frontend Repository](https://github.com/hacKRD0/PMApp-Frontend)
+- **Deployment**: [PMApp Deployment Repository](https://github.com/hacKRD0/PMApp-deployment)
 
 ---
 
@@ -218,10 +233,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For questions or support, reach out to the project maintainers:
+For further assistance or inquiries, reach out to:
 
-- **Your Name**: [your.email@example.com](mailto:your.email@example.com)
+- **Maintainer**: [Keshava Rajavaram](mailto:keshava.rajavaram@gmail.com)
 
 ---
-
-This README is structured to provide clarity for developers working on the repository while being detailed enough to serve as documentation.
