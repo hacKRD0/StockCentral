@@ -12,7 +12,7 @@ const UserStocks = db.UserStocks;
 const StockMaster = db.StockMaster;
 
 // Helper to get the __dirname in ESM
-const __dirname = dirname(process.env.WORKING_DIR);
+const __dirname = dirname(`${process.env.WORKING_DIR}`);
 // console.log('__dirname: ', __dirname);
 
 export default async (req, res) => {

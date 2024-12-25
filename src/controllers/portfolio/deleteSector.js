@@ -8,7 +8,7 @@ export default async (req, res) => {
   const { sectorId } = req.body;
 
   try {
-    const unknownSector = await Sector.findOne({
+    const unknownSector = await Sector.findOrCreate({
       where: { name: 'Unknown', UserId: userId },
     });
 
@@ -18,6 +18,7 @@ export default async (req, res) => {
         message: 'You cannot delete the Unknown sector.',
       });
     }
+    console.log('userId: ', userId);
 
     await StockReference.update(
       { SectorId: unknownSector.id },
