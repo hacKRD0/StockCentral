@@ -1,15 +1,9 @@
 import { unlinkSync } from 'fs';
 import db from '../../db/models/index.js';
-import { readFile } from 'fs/promises';
 import { join, dirname } from 'path'; // Correct way to import from 'path'
-import processZerodhaPortfolio from './brokerages/zerodha.js';
-import processGrowwPortfolio from './brokerages/groww.js';
-import processSharekhanPortfolio from './brokerages/sharekhan.js';
+import processPortfolio from '../utils/processPortfolio.js';
 
 const User = db.User;
-const Brokerage = db.Brokerage;
-const UserStocks = db.UserStocks;
-const StockMaster = db.StockMaster;
 
 // Helper to get the __dirname in ESM
 const __dirname = dirname(`${process.env.WORKING_DIR}`);
@@ -17,7 +11,7 @@ const __dirname = dirname(`${process.env.WORKING_DIR}`);
 
 export default async (req, res) => {
   const { userId } = req;
-  const { brokerageName, date } = req.body;
+  let { brokerageName, date } = req.body;
   // console.log('Request: ', req);
   // console.log('brokerageName: ', brokerageName);
   // console.log('date: ', date);
@@ -30,20 +24,13 @@ export default async (req, res) => {
     const user = await User.findByPk(userId);
     console.log('user: ', user);
 
+    brokerageName = brokerageName.trim();
     // Get the uploaded file path
     const filePath = join(__dirname, req.file.path);
-    console.log('file: ', req.file);
-    console.log('filePath: ', filePath);
+    // console.log('file: ', req.file);
+    // console.log('filePath: ', filePath);
+    await processPortfolio(user, filePath, brokerageName, date);
 
-    if (brokerageName === 'Zerodha') {
-      await processZerodhaPortfolio(user, filePath, brokerageName, date);
-    } else if (brokerageName === 'Groww') {
-      await processGrowwPortfolio(user, filePath, brokerageName, date);
-    } else if (brokerageName === 'Sharekhan') {
-      await processSharekhanPortfolio(user, filePath, brokerageName, date);
-    }
-
-    // console.log('parsedData: ', parsedData);
     unlinkSync(filePath);
 
     res.status(200).send({

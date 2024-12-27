@@ -9,7 +9,7 @@ import userRoute from './routes/user.route.js';
 
 const app = express();
 const server = new createServer(app);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow your frontend origin
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'], // Allowed methods
@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.use('/auth', authRoute);
-app.use('/portfolio', portfolioRoute);
-app.use('/user', userRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/portfolio', portfolioRoute);
+app.use('/api/user', userRoute);
 
 app.use('*', (req, res) => {
   res.status(404).json({
