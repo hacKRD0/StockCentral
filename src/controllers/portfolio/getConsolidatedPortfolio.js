@@ -4,8 +4,8 @@ import { Op } from 'sequelize';
 const User = db.User;
 const Brokerage = db.Brokerage;
 const Sector = db.Sector;
+const StockMapper = db.StockMapper;
 const StockMaster = db.StockMaster;
-const StockReference = db.StockReference;
 
 export default async (req, res) => {
   const { userId } = req;
@@ -30,10 +30,10 @@ export default async (req, res) => {
         },
       },
       include: {
-        model: StockMaster,
+        model: StockMapper,
         include: [
           {
-            model: StockReference,
+            model: StockMaster,
             include: [
               {
                 model: Sector,

@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class StockMaster extends Model {
+  class StockMapper extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,16 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      StockMaster.hasMany(models.StockMapper, { onDelete: 'SET NULL' });
-      StockMaster.belongsTo(models.Sector, {
-        foreignKey: 'SectorId',
-        onUpdate: 'CASCADE',
+      StockMapper.belongsTo(models.User, { foreignKey: 'UserId' });
+      StockMapper.belongsTo(models.Brokerage, { foreignKey: 'BrokerageId' });
+      StockMapper.belongsTo(models.StockMaster, {
+        foreignKey: 'StockMasterId',
         onDelete: 'SET NULL',
       });
-      StockMaster.belongsTo(models.User, { foreignKey: 'UserId' });
+      StockMapper.hasMany(models.UserStocks, { onDelete: 'CASCADE' });
     }
   }
-  StockMaster.init(
+  StockMapper.init(
     {
       UserId: {
         type: DataTypes.INTEGER,
@@ -28,26 +28,33 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      name: {
-        type: DataTypes.STRING,
+      BrokerageId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      code: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      SectorId: {
-        type: DataTypes.STRING,
         references: {
-          model: 'Sector',
+          model: 'Brokerage',
           key: 'id',
         },
+      },
+      StockMasterId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'StockMaster',
+          key: 'id',
+        },
+      },
+      BrokerageCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      BrokerageSector: {
+        type: DataTypes.STRING,
       },
     },
     {
       sequelize,
-      modelName: 'StockMaster',
+      modelName: 'StockMapper',
     }
   );
-  return StockMaster;
+  return StockMapper;
 };

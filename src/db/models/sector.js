@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'UserId',
         onDelete: 'CASCADE',
       });
-      Sector.hasMany(models.StockReference, {
+      Sector.hasMany(models.StockMaster, {
         foreignKey: 'SectorId',
         onUpdate: 'CASCADE',
       });
@@ -34,46 +34,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Sector',
-      hooks: {
-        /**
-         * Before a sector is destroyed, handle the "Unknown" sector logic.
-         */
-        async beforeDestroy(sector, options) {
-          const transaction =
-            options.transaction || (await sequelize.transaction());
-          const { StockReference, Sector } = sequelize.models;
-
-          try {
-            // Find or create the "Unknown" sector
-            const [unknownSector] = await Sector.findOrCreate({
-              where: {
-                name: 'Unknown',
-                UserId: sector.UserId, // User who owns the sector
-              },
-              defaults: {
-                name: 'Unknown',
-                UserId: sector.UserId,
-              },
-              transaction,
-            });
-
-            // Update stockReferences to reference the "Unknown" sector
-            await StockReference.update(
-              { SectorId: unknownSector.id },
-              { where: { SectorId: sector.id }, transaction }
-            );
-
-            if (!options.transaction) {
-              await transaction.commit();
-            }
-          } catch (error) {
-            if (!options.transaction) {
-              await transaction.rollback();
-            }
-            throw error;
-          }
-        },
-      },
     }
   );
 

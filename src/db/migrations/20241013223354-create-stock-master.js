@@ -18,29 +18,21 @@ module.exports = {
           key: 'id',
         },
       },
-      BrokerageId: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Brokerages',
-          key: 'id',
-        },
       },
-      StockReferenceId: {
+      code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      SectorId: {
         type: Sequelize.INTEGER,
         onDelete: 'SET NULL',
         references: {
-          model: 'StockReferences',
+          model: 'Sectors',
           key: 'id',
         },
-      },
-      BrokerageCode: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      BrokerageSector: {
-        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

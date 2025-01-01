@@ -18,12 +18,12 @@ module.exports = {
           key: 'id',
         },
       },
-      StockMasterId: {
+      StockMapperId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
         references: {
-          model: 'StockMasters',
+          model: 'StockMappers',
           key: 'id',
         },
       },

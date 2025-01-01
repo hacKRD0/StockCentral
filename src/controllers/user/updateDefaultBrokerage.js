@@ -5,7 +5,6 @@ const User = db.User;
 export default async (req, res) => {
   const { userId } = req;
   const { brokerageId } = req.body;
-  console.log('req.body: ', req.body);
 
   if (!brokerageId) {
     return res.status(400).send('Default brokerage id is required.');

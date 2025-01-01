@@ -5,15 +5,11 @@ import processPortfolio from '../utils/processPortfolio.js';
 
 const User = db.User;
 
-// Helper to get the __dirname in ESM
-const __dirname = dirname(`${process.env.WORKING_DIR}`);
-// console.log('__dirname: ', __dirname);
-
 export default async (req, res) => {
   const { userId } = req;
-  let { brokerageName, date } = req.body;
+  let { brokerageId, date } = req.body;
   // console.log('Request: ', req);
-  // console.log('brokerageName: ', brokerageName);
+  // console.log('brokerageId: ', brokerageId);
   // console.log('date: ', date);
   // console.log('file: ', req.file);
   if (!req.file) {
@@ -24,14 +20,10 @@ export default async (req, res) => {
     const user = await User.findByPk(userId);
     console.log('user: ', user);
 
-    brokerageName = brokerageName.trim();
-    // Get the uploaded file path
-    const filePath = join(__dirname, req.file.path);
     // console.log('file: ', req.file);
-    // console.log('filePath: ', filePath);
-    await processPortfolio(user, filePath, brokerageName, date);
-
-    unlinkSync(filePath);
+    const file = req.file;
+    brokerageId = parseInt(brokerageId);
+    await processPortfolio(user, file, brokerageId, date);
 
     res.status(200).send({
       success: true,

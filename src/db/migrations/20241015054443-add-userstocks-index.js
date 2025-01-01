@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Add unique composite index on UserId, StockMasterId, and Date
+    // Add unique composite index on UserId, StockMapperId, and Date
     await queryInterface.addIndex(
       'UserStocks',
-      ['UserId', 'StockMasterId', 'Date'],
+      ['UserId', 'StockMapperId', 'Date'],
       {
         unique: true,
         name: 'user_stock_date_unique_index', // Optional: custom index name

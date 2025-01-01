@@ -1,21 +1,21 @@
 import db from '../../db/models/index.js';
 
-const StockReference = db.StockReference;
+const StockMaster = db.StockMaster;
 
 export default async (req, res) => {
   try {
     const { name, code, sector } = req.body;
-    const stockReference = await StockReference.create({
+    const stockMaster = await StockMaster.create({
       name,
       code,
       sector,
     });
     res.status(200).send({
       success: true,
-      stockReference: stockReference,
+      stockMaster: stockMaster,
     });
   } catch (error) {
-    console.log('addStockReference Error: ', error);
+    console.log('addStockMaster Error: ', error);
     res.status(500).json({
       success: false,
       message: error.message,

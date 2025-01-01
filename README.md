@@ -21,7 +21,7 @@ This repository contains the backend implementation for the **Portfolio Manageme
 - **Sector Management**:
 
   - Organize stocks into sectors for better categorization.
-  - Automatically reassign "Unknown" sectors when a sector is deleted.
+  - Automatically set "NULL" in the stockmaster table when a sector is deleted.
 
 - **Portfolio Tracking**:
   - Consolidate portfolio data across multiple brokerages for a specific date.
@@ -32,7 +32,7 @@ This repository contains the backend implementation for the **Portfolio Manageme
 
 - **Database Integrity**:
 
-  - Update dependent `StockMaster` entries when `StockReference` is deleted using hooks.
+  - Update dependent `StockMapper` entries when `StockMaster` is deleted using hooks.
   - Leverage transactions and hooks to maintain atomicity and referential integrity.
 
 - **Efficient Querying**:
@@ -40,7 +40,7 @@ This repository contains the backend implementation for the **Portfolio Manageme
   - Retrieve unique dates and portfolio summaries using optimized Sequelize queries.
 
 - **Custom Hooks**:
-  - Implement model hooks for cascading effects on `StockReference` and `Sector` deletions.
+  - Implement model hooks for cascading effects on `StockMaster` and `Sector` deletions.
 
 ---
 
@@ -141,7 +141,7 @@ Ensure the following are installed on your system:
 | `name` | String  | Brokerage name |
 | `code` | String  | Brokerage code |
 
-#### **StockReferences**
+#### **StockMasters**
 
 | Column     | Type    | Description              |
 | ---------- | ------- | ------------------------ |
@@ -151,14 +151,14 @@ Ensure the following are installed on your system:
 | `SectorId` | Integer | Foreign key to `Sectors` |
 | `UserId`   | Integer | Foreign key to `Users`   |
 
-#### **StockMasters**
+#### **StockMappers**
 
-| Column             | Type    | Description                      |
-| ------------------ | ------- | -------------------------------- |
-| `id`               | Integer | Primary key                      |
-| `UserId`           | Integer | Foreign key to `Users`           |
-| `BrokerageId`      | Integer | Foreign key to `Brokerages`      |
-| `StockReferenceId` | Integer | Foreign key to `StockReferences` |
+| Column          | Type    | Description                   |
+| --------------- | ------- | ----------------------------- |
+| `id`            | Integer | Primary key                   |
+| `UserId`        | Integer | Foreign key to `Users`        |
+| `BrokerageId`   | Integer | Foreign key to `Brokerages`   |
+| `StockMasterId` | Integer | Foreign key to `StockMasters` |
 
 #### **Sectors**
 
@@ -174,7 +174,7 @@ Ensure the following are installed on your system:
 | --------------- | ------- | ----------------------------- |
 | `id`            | Integer | Primary key                   |
 | `UserId`        | Integer | Foreign key to `Users`        |
-| `StockMasterId` | Integer | Foreign key to `StockMasters` |
+| `StockMapperId` | Integer | Foreign key to `StockMappers` |
 | `Qty`           | Integer | Stock quantity                |
 | `AvgCost`       | Double  | Average stock cost            |
 | `Date`          | Date    | Uploaded date                 |

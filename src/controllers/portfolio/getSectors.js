@@ -6,7 +6,9 @@ export default async (req, res) => {
   const { userId } = req;
   try {
     const user = await User.findByPk(userId);
-    const sectors = await user.getSectors();
+    const sectors = await user.getSectors({
+      order: [['name', 'ASC']],
+    });
     return res.status(200).send({
       success: true,
       message: 'Sectors retrieved successfully.',

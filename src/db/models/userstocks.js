@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       UserStocks.belongsTo(models.User, {
         foreignKey: 'UserId',
       });
-      UserStocks.belongsTo(models.StockMaster, {
-        foreignKey: 'StockMasterId',
+      UserStocks.belongsTo(models.StockMapper, {
+        foreignKey: 'StockMapperId',
       });
     }
   }
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      StockMasterId: {
+      StockMapperId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true, // Composite unique index
-          fields: ['UserId', 'StockMasterId', 'Date'],
+          fields: ['UserId', 'StockMapperId', 'Date'],
         },
       ],
     }

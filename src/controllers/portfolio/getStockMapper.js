@@ -1,18 +1,18 @@
 import db from '../../db/models/index.js';
 
 const Brokerage = db.Brokerage;
-const StockReference = db.StockReference;
 const StockMaster = db.StockMaster;
+const StockMapper = db.StockMapper;
 const Sector = db.Sector;
 
 export default async (req, res) => {
   const { userId } = req;
   try {
-    const stockMaster = await StockMaster.findAll({
+    const stockMapper = await StockMapper.findAll({
       where: { UserId: userId },
       include: [
         {
-          model: StockReference,
+          model: StockMaster,
           include: [
             {
               model: Sector,
@@ -29,14 +29,14 @@ export default async (req, res) => {
     });
     return res.status(200).send({
       success: true,
-      message: 'Stock references retrieved successfully.',
-      StockMaster: stockMaster,
+      message: 'StocksMapper retrieved successfully.',
+      stockMapper: stockMapper,
     });
   } catch (error) {
-    console.log('getStockMaster Error: ', error);
+    console.log('getStockMapper Error: ', error);
     return res.status(500).send({
       success: false,
-      message: 'An error occurred while retrieving the stock master table.',
+      message: 'An error occurred while retrieving the stock mapper table.',
     });
   }
 };

@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('StockReferences', {
+    await queryInterface.createTable('StockMappers', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,22 +18,29 @@ module.exports = {
           key: 'id',
         },
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      code: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      SectorId: {
+      BrokerageId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         references: {
-          model: 'Sectors',
+          model: 'Brokerages',
           key: 'id',
         },
+      },
+      StockMasterId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'SET NULL',
+        references: {
+          model: 'StockMasters',
+          key: 'id',
+        },
+      },
+      BrokerageCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      BrokerageSector: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -46,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('StockReferences');
+    await queryInterface.dropTable('StockMappers');
   },
 };
