@@ -1,7 +1,6 @@
 import db from '../../db/models/index.js';
 import { Op } from 'sequelize';
 
-const User = db.User;
 const Brokerage = db.Brokerage;
 const StockMapper = db.StockMapper;
 const UserStocks = db.UserStocks;
@@ -9,6 +8,13 @@ const UserStocks = db.UserStocks;
 export default async (req, res) => {
   const { userId } = req;
   let { brokerageId, fromDate, toDate } = req.body;
+
+  if (!brokerageId || !fromDate || !toDate) {
+    return res.status(400).send({
+      success: false,
+      message: 'Missing required fields: brokerageId, fromDate, toDate',
+    });
+  }
 
   try {
     brokerageId = parseInt(brokerageId);
@@ -31,7 +37,7 @@ export default async (req, res) => {
 
     // Extract the IDs into an array
     const ids = stockMapperIds.map((m) => m.id);
-    console.log('ids: ', ids);
+    'ids: ', ids;
 
     // Delete all UserStocks for the given StockMapperIds and date
     const deleteCount = await UserStocks.destroy({

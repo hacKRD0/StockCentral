@@ -18,11 +18,20 @@ export default async (req, res) => {
 
   try {
     const user = await User.findByPk(userId);
-    console.log('user: ', user);
+    // console.log('user: ', user);
 
     // console.log('file: ', req.file);
     const file = req.file;
     brokerageId = parseInt(brokerageId);
+
+    // Check if date is of correct format
+    if (!date || isNaN(Date.parse(date))) {
+      return res.status(400).send({
+        success: false,
+        message: 'Invalid date format',
+      });
+    }
+
     await processPortfolio(user, file, brokerageId, date);
 
     res.status(200).send({

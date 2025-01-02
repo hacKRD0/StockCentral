@@ -61,7 +61,7 @@ const router = Router();
 
 router.post('/upload', verifyToken, upload.single('file'), uploadPortfolio);
 
-router.delete('/deletePortfolio', verifyToken, deletePortfolio);
+router.delete('/', verifyToken, deletePortfolio);
 
 router.get('/stockMasters', verifyToken, getStockMasters);
 

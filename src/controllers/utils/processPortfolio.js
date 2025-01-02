@@ -62,9 +62,9 @@ const parseExcel = (filePath, brokerageId) => {
   const worksheet = workbook.Sheets[sheetName];
   const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-  console.log('workbook: ', workbook);
-  console.log('worksheet: ', worksheet);
-  console.log('jsonData: ', jsonData);
+  // console.log('workbook: ', workbook);
+  // console.log('worksheet: ', worksheet);
+  // console.log('jsonData: ', jsonData);
   // Remove empty rows and trim whitespace
   const rows = jsonData
     .map((row) =>
@@ -76,7 +76,7 @@ const parseExcel = (filePath, brokerageId) => {
         row.some((cell) => cell !== null && cell !== undefined && cell !== '')
     );
 
-  console.log('rows: ', rows);
+  // console.log('rows: ', rows);
   return rows.map((row) => {
     let symbol, quantity, price;
 
@@ -105,7 +105,7 @@ const parseExcel = (filePath, brokerageId) => {
 export default async (user, file, brokerageId, date) => {
   try {
     const filePath = path.join(__dirname, file.path);
-    console.log('Processing file:', file);
+    // console.log('Processing file:', file);
 
     // Determine the file extension
     const ext = path.extname(file.originalname).toLowerCase();
@@ -127,7 +127,7 @@ export default async (user, file, brokerageId, date) => {
         'Unsupported file format. Please upload a CSV, XLS, or XLSX file.'
       );
     }
-    console.log('parsedData: ', parsedData);
+    // console.log('parsedData: ', parsedData);
 
     // Validate brokerage
     const brokerage = await Brokerage.findByPk(brokerageId);
@@ -144,17 +144,17 @@ export default async (user, file, brokerageId, date) => {
 
     // Extract the IDs into an array
     const ids = stockMapperIds.map((m) => m.id);
-    console.log('ids: ', ids);
+    // console.log('ids: ', ids);
 
     // Delete all UserStocks for the given StockMapperIds and date
     const deleteCount = await UserStocks.destroy({
       where: {
         UserId: user.id,
-        Date: new Date(date),
+        Date: date,
         StockMapperId: { [Op.in]: ids },
       },
     });
-    console.log('deleteCount: ', deleteCount);
+    // console.log('deleteCount: ', deleteCount);
 
     // Filter invalid rows
     const validData = parsedData.filter(
@@ -163,7 +163,7 @@ export default async (user, file, brokerageId, date) => {
     );
 
     if (validData.length === 0) {
-      console.log('No valid data to process.');
+      // console.log('No valid data to process.');
       return;
     }
 
@@ -209,7 +209,7 @@ export default async (user, file, brokerageId, date) => {
           StockMapperId: stock.id,
           Qty: quantity,
           AvgCost: price,
-          Date: new Date(date), // Ensure exact Date match
+          Date: date, // Ensure exact Date match
         });
       }
     );
