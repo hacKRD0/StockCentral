@@ -32,17 +32,15 @@ export default async (req, res) => {
       });
     }
 
-    await processPortfolio(user, file, brokerageId, date);
-
-    res.status(200).send({
-      success: true,
-      message: 'Portfolio uploaded successfully',
-    });
+    const response = await processPortfolio(user, file, brokerageId, date);
+    console.log('response: ', response);
+    res.status(200).send(response);
   } catch (error) {
     console.log('uploadPortfolio Error: ', error);
     return res.status(500).send({
       success: false,
       message: 'Internal server error',
+      error: error,
     });
   }
 };

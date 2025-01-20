@@ -17,8 +17,6 @@ export default async (req, res) => {
       ],
     });
 
-    console.log('user: ', user);
-
     return res.status(200).send({
       success: true,
       message: 'User found successfully.',

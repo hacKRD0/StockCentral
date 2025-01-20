@@ -6,10 +6,6 @@ export default async (req, res) => {
   const { userId } = req;
   const { updates } = req.body;
 
-  console.log('updates: ', updates);
-  console.log('req.body: ', req.body);
-  console.log('req body updates', req.body.updates);
-
   // Validate that 'updates' is provided and is an array
   if (!updates || !Array.isArray(updates)) {
     return res

@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // name: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
       code: {
         type: DataTypes.STRING,
         allowNull: false,

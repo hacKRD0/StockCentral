@@ -5,7 +5,6 @@ const StockMaster = db.StockMaster;
 export default async (req, res) => {
   const { userId } = req;
   const { name, code, SectorId } = req.body;
-  console.log('req.body: ', req.body);
 
   try {
     const stockMasterExists = await StockMaster.findOne({
@@ -26,10 +25,14 @@ export default async (req, res) => {
       SectorId: SectorId ? SectorId : null,
     });
 
+    const stockMasterWithSector = await StockMaster.findByPk(stockMaster.id, {
+      include: [{ model: db.Sector }],
+    });
+
     return res.status(200).send({
       success: true,
       message: 'Master stock added successfully.',
-      stockMaster: stockMaster,
+      stockMaster: stockMasterWithSector,
     });
   } catch (error) {
     console.log('addStockMaster Error: ', error);

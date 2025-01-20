@@ -22,7 +22,7 @@ export default async (req, res) => {
 
     // Extract the dates into an array
     const uniqueDates = userStocks.map((stock) => stock.uniqueDate);
-
+    console.log('uniqueDates: ', uniqueDates);
     return res.status(200).send({
       success: true,
       dates: uniqueDates,

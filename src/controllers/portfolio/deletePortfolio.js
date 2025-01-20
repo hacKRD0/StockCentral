@@ -43,7 +43,7 @@ export default async (req, res) => {
     const deleteCount = await UserStocks.destroy({
       where: {
         UserId: userId,
-        Date: { [Op.between]: [new Date(fromDate), new Date(toDate)] },
+        Date: { [Op.between]: [fromDate, toDate] },
         StockMapperId: { [Op.in]: ids },
       },
     });
