@@ -220,8 +220,8 @@ Ensure the following are installed on your system:
 
 ## Related Repositories
 
-- **Frontend**: [PMApp Frontend Repository](https://github.com/hacKRD0/PMApp-Frontend)
-- **Deployment**: [PMApp Deployment Repository](https://github.com/hacKRD0/PMApp-deployment)
+- **Frontend**: [StockCentral Frontend Repository](https://github.com/hacKRD0/StockCentral-Frontend)
+- **Deployment**: [StockCentral Deployment Repository](https://github.com/hacKRD0/StockCentral-deployment)
 
 ---
 
